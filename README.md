@@ -15,3 +15,5 @@ To save the animation as an animated gif:
 ```
 python best_stats_anim.py save
 ```
+
+![](best_stat_anim-2018-07-12-13-20-49.gif)
