@@ -80,7 +80,7 @@ def main(output):
     ax.set_ylim(df['Life Expectancy'].min() - 2,
                 df['Life Expectancy'].max() + 2)
 
-    # define visualization
+    # set the regions' colors
     colors = {
         'Latin America & Caribbean': '#2CA02C',
         'South Asia': '#8C564B',
@@ -91,6 +91,10 @@ def main(output):
         'North America': '#9467BD'
     }
 
+
+    # create one scatterplot per region
+    # I need to do like this to have all the regions
+    # showing up in the legend
     scats = []
     groups = df.groupby('Region')
     for name, grp in groups:
@@ -102,8 +106,13 @@ def main(output):
                         alpha=.6)
         scats.append(scat)
 
+    # add the year in the middle of the scatter plot
+    # for now, the text is empty (''). Il will be filled
+    # in each frame
     year_label = ax.text(4.5, 50, '', va='center', ha='center', alpha=.1,
                         size=32, fontdict={'weight': 'bold'})
+    
+    # decorate the visualization
     ax.spines['bottom'].set_color('silver')
     ax.spines['top'].set_color('silver')
     ax.spines['right'].set_color('silver')
@@ -126,9 +135,14 @@ def main(output):
     # function that will update the figure with new data
     def update(year):
         for scat, (name, data) in zip(scats, groups):
+            # get the data for the current year
             sample = data[data['Year'] == year]
+            # set the x and y values
             scat.set_offsets(sample[['Fertility Rate', 'Life Expectancy']])
+            # update the size of the markers with the population
+            # of the current year   
             scat.set_sizes(np.sqrt(sample['Population'] / 10000) * 5)
+            # update the year label displayed at the center of the figure
             year_label.set_text(year)
         return scats,
 
