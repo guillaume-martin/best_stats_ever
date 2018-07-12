@@ -49,29 +49,6 @@ def preprocess_df(df, value_name):
     return df
 
 
-    # Load the data
-    country = pd.read_csv('country_metadata.csv')
-    population = pd.read_csv('country_population.csv', skiprows=4)
-    fertility_rate = pd.read_csv('fertility_rate.csv', skiprows=4)
-    life_expectancy = pd.read_csv('life_expectancy.csv', skiprows=4)
-
-    country = country[['Country Code', 'Region']]
-
-    population = preprocess_df(population, 'Population')
-    fertility_rate = preprocess_df(fertility_rate, 'Fertility Rate')
-    life_expectancy = preprocess_df(life_expectancy, 'Life Expectancy')
-
-    # Merge the data into one dataframe
-    df = pd.merge(country, population, how='left', on='Country Code')
-    df = pd.merge(df, life_expectancy, how='left', on=['Country Code', 'Year'])
-    df = pd.merge(df, fertility_rate, how='left', on=['Country Code', 'Year'])
-
-    # Remove remaining lines with missing values
-    # They will appear if a country is in one dataframe but not in another one
-    df.dropna(axis=0, inplace=True)
-    print(df.head())
-    return df
-
 def main(output):
     # Load the data
     country = pd.read_csv('country_metadata.csv')
